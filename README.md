@@ -10,12 +10,8 @@ toc_float: true
 number_sections: true
 theme: readable
 ---
-  
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-```
 
-```{r load-packages}
+```r
 library(edgeR)
 library(ggplot2)
 library(compcodeR)
@@ -27,7 +23,7 @@ set.seed(123456)
 
 ## Load bulk RNA-seq Data
 
-```{r load-data}
+```r
 # setwd removed for portability. Make sure file path is correct.
 if (!file.exists('combined_counts.txt')) stop('File not found: combined_counts.txt')
 rna_data <- read.table('combined_counts.txt', header = TRUE, check.names = FALSE) %>%
@@ -37,7 +33,7 @@ head(rna_data)
 
 ## Poisson vs Negative Binomial
 
-```{r poisson-nb-comparison}
+```r
 # ==== Negative binomal vs Poisson ====
 real_counts <- rna_data + 1 # add 1 to avoid log infinite issue
 # get per gene mean expression
@@ -87,7 +83,7 @@ ggplot(df_var, aes(x = mean, y = variance, color = model)) +
 
 ## Dispersion and Variance
 
-```{r dispersion-variance}
+```r
 # ==== dispersion & variance ====
 # in NB dispersion and variance are linked, however different concepts
 # mathematically, for NB, var = u + u^2 * disp, where u is mean
@@ -230,7 +226,7 @@ par(mfrow = c(1, 1))
 
 ## Normalization Importance
 
-```{r normalization-check}
+```r
 # ==== Normalization ====
 # Here we simulate rna data with 0 differential genes 
 # Intentionally set 10 fold difference between group 1 and group 2.
@@ -292,7 +288,7 @@ hist(dge_noDE_TMM_ex$table$PValue, breaks = 50, main = "P-value distribution wit
 
 ## Linear Model Fitting in edgeR
 
-```{r glm-fit}
+```r
 # ==== GLM vs CLM for RNA data ====
 # CLM assumes normal distribution and assumes constant variance,
 # in which we have known as false for rna seq
@@ -326,7 +322,7 @@ ggplot(df, aes(x = x)) +
 
 ## Design Matrix with/without Intercept
 
-```{r design-matrix}
+```r
 # ==== design matrix w/wo intercept (common baseline) ====
 sim_counts <- sim_DE@count.matrix
 sim_info <- sim_DE@sample.annotations
@@ -343,7 +339,7 @@ model.matrix(~group) %*% c(0.1, 0.2)
 
 ## Simulating and Correcting Batch Effects
 
-```{r simulate-batch-effects}
+```r
 # ==== Batch effects ====
 # in this section we will explore the effects of simluated batch effects on de discovery
 # ---- _simulate no batch effects ----
@@ -561,7 +557,7 @@ data.frame(false_positive = c(FP_batch_modeled, FP_batch_not_modeled),
 
 ## Reconstructing GLM & Residual Visualization
 
-```{r reconstruct-glm}
+```r
 
 # ==== dispersion, regression coefficient, and residual ====
 # in this section we will implement a typical edgeR differential test pipeline
