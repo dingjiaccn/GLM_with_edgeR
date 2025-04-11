@@ -28,7 +28,8 @@ set.seed(123456)
 ## Load bulk RNA-seq Data
 
 ```{r load-data}
-setwd('/Users/jiachengd/Downloads/linear_model_w_edgeR')
+# setwd removed for portability. Make sure file path is correct.
+if (!file.exists('combined_counts.txt')) stop('File not found: combined_counts.txt')
 rna_data <- read.table('combined_counts.txt', header = TRUE, check.names = FALSE) %>%
   tibble::column_to_rownames("Geneid")
 head(rna_data)
